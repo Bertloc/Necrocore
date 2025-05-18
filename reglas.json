@@ -1,0 +1,30 @@
+[
+  {
+    "id": 1,
+    "nombre": "Bloquear IP Rusa",
+    "tipo": "Red/IP",
+    "estado": true,
+    "fecha_modificacion": "2025-05-09"
+  },
+  {
+    "id": 2,
+    "nombre": "Limitar puerto 22",
+    "tipo": "Puerto",
+    "estado": true,
+    "fecha_modificacion": "2025-05-09"
+  },
+  {
+    "id": 3,
+    "nombre": "Bloqueo palabra clave",
+    "tipo": "Contenido",
+    "estado": false,
+    "fecha_modificacion": "2025-05-08"
+  },
+  {
+    "id": 4,
+    "nombre": "Blorquear IP Alemana",
+    "tipo": "Red/IP",
+    "estado": true,
+    "fecha_modificacion": "2025-05-17"
+  }
+]

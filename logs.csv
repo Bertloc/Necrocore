@@ -1,0 +1,5 @@
+fecha,hora,origen,tipo_evento,detalle
+2025-05-09,20:43,192.163.0.3,Acceso bloqueado,Intento de login fallido
+2025-05-08,20:41,IA Engine,Análisis completado,Correo clasificado como Phishing
+2025-05-09,20:37,Admin,Cambio de regla,Regla 'Bloquear IP Rusa' modificada
+2025-05-09,20:30,Firewall,Puerto cerrado,Se bloqueó el puerto 22

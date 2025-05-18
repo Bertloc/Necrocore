@@ -1,0 +1,135 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>NECROCORE | Dashboard de Ciberseguridad</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      background-color: #0e0e2c;
+      color: #f0f0f0;
+      font-family: 'Segoe UI', sans-serif;
+    }
+    .navbar {
+      background-color: #1e1e3f;
+    }
+    .navbar-brand {
+      font-weight: bold;
+      color: #fff;
+    }
+    .card {
+      background-color: #1b1b38;
+      border: none;
+      color: #fff;
+    }
+    .table-dark th {
+      background-color: #29294d;
+    }
+    .btn-necro {
+      background: linear-gradient(90deg, #7f00ff, #e100ff);
+      color: #fff;
+      border: none;
+    }
+    .btn-necro:hover {
+      background: linear-gradient(90deg, #5e00cc, #b800cc);
+    }
+    .section-title {
+      border-bottom: 2px solid #7f00ff;
+      padding-bottom: 10px;
+      margin-top: 40px;
+    }
+    .label-phishing {
+      color: #ff4d4d;
+      font-weight: bold;
+    }
+    .label-legitimo {
+      color: #4dff4d;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar px-4">
+    <a class="navbar-brand" href="#">🛡️ NECROCORE</a>
+  </nav>
+
+  <div class="container my-5">
+
+    <h2 class="section-title">📬 Analizar Correo</h2>
+    <form method="POST" action="/analizar-web" class="mb-4">
+      <div class="mb-3">
+        <label class="form-label">Contenido del Correo:</label>
+        <textarea class="form-control" name="contenido" rows="4" required></textarea>
+      </div>
+      <button type="submit" class="btn btn-necro w-100">Analizar</button>
+    </form>
+
+    {% if resultado %}
+    <div class="alert alert-info text-center">
+      <h4>Resultado del análisis: 
+        {% if resultado == 'Phishing' %}
+          <span class="label-phishing">Phishing</span>
+        {% else %}
+          <span class="label-legitimo">Legítimo</span>
+        {% endif %}
+      </h4>
+    </div>
+    {% endif %}
+
+    {% if historial %}
+    <h3 class="section-title">📜 Historial de Correos Analizados</h3>
+    <table class="table table-bordered table-dark table-striped mt-3">
+      <thead>
+        <tr>
+          <th>Fecha</th>
+          <th>Contenido</th>
+          <th>Resultado</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for row in historial %}
+        <tr>
+          <td>{{ row[0] }}</td>
+          <td>{{ row[1] }}</td>
+          <td>
+            {% if row[2] == 'Phishing' %}
+              <span class="label-phishing">Phishing</span>
+            {% else %}
+              <span class="label-legitimo">Legítimo</span>
+            {% endif %}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <div class="text-end mt-2">
+      <a href="/descargar-historial" class="btn btn-success">📥 Descargar historial CSV</a>
+    </div>
+    {% endif %}
+
+    {% if ips_bloqueadas %}
+    <h3 class="section-title">🚫 IPs Bloqueadas Automáticamente</h3>
+    <table class="table table-bordered table-striped table-dark mt-3">
+      <thead class="table-danger">
+        <tr>
+          <th>Fecha</th>
+          <th>IP</th>
+          <th>Razón</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for ip in ips_bloqueadas %}
+        <tr>
+          <td>{{ ip[0] }}</td>
+          <td>{{ ip[1] }}</td>
+          <td>{{ ip[2] }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% endif %}
+
+  </div>
+</body>
+</html>

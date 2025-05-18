@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>NECROCORE - Logs</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    :root {
+      --bg-main: #0e0e2e;
+      --bg-card: #1a1a40;
+      --border-color: #29294d;
+      --text-light: #eaeaea;
+      --text-muted: #999;
+    }
+
+    body {
+      background-color: var(--bg-main);
+      color: var(--text-light);
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    .topbar {
+      background-color: #151537;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .topbar .logo {
+      font-size: 1.6rem;
+      font-weight: bold;
+      color: #fff;
+    }
+
+    .topbar .menu a {
+      margin-left: 1.5rem;
+      color: var(--text-muted);
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .topbar .menu a:hover,
+    .topbar .menu a.active {
+      color: #fff;
+      border-bottom: 2px solid #e100ff;
+    }
+
+    .card-container {
+      background-color: var(--bg-card);
+      border-radius: 16px;
+      padding: 2rem;
+      box-shadow: 0 0 8px rgba(255, 0, 255, 0.05);
+    }
+
+    .table thead th {
+      background-color: #23234a;
+      color: #fff;
+      font-size: 0.95rem;
+      border-bottom: 1px solid #444;
+    }
+
+    .table td {
+      vertical-align: middle;
+      font-size: 0.9rem;
+    }
+
+    .badge {
+      border-radius: 20px;
+      padding: 6px 14px;
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+
+    .badge-bloqueo {
+      background-color: #ff4d4d;
+      color: white;
+    }
+
+    .badge-cambio {
+      background-color: #00cfff;
+      color: black;
+    }
+
+    .badge-ia {
+      background-color: #a066ff;
+      color: white;
+    }
+
+    .badge-otro {
+      background-color: #888;
+      color: white;
+    }
+
+    .refresh-btn {
+      background-color: transparent;
+      border: 1px solid #00bfff;
+      color: #00bfff;
+      border-radius: 8px;
+      padding: 6px 16px;
+      transition: all 0.25s ease;
+      font-weight: 500;
+    }
+
+    .refresh-btn:hover {
+      background-color: #00bfff;
+      color: #0e0e2e;
+    }
+
+    .text-info {
+      color: #30c5ff !important;
+      font-weight: 500;
+    }
+
+    .text-info:hover {
+      text-decoration: underline;
+      color: #00aaff !important;
+    }
+
+    .meta {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    .table-dark {
+      --bs-table-bg: transparent;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="topbar">
+    <div class="logo">🛡️ NECROCORE</div>
+    <div class="menu">
+      <a href="/dashboard">Dashboard</a>
+      <a href="/reglas">Reglas</a>
+      <a href="/amenazas">Amenazas</a>
+      <a href="/logs" class="active">Logs</a>
+      <a href="/logout">Salir</a>
+    </div>
+  </div>
+
+  <div class="container mt-5">
+    <div class="card-container">
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <h3 class="mb-0">📄 Historial de Eventos del Sistema</h3>
+        <a href="/logs" class="btn refresh-btn">🔄 Actualizar</a>
+      </div>
+
+      <table class="table table-dark table-hover">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Tipo de Evento</th>
+            <th>Origen</th>
+            <th>Fecha y Hora</th>
+            <th>Detalles</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for log in registros %}
+          <tr>
+            <td class="text-muted">#{{ loop.revindex }}</td>
+            <td>
+              {% if "bloqueo" in log.tipo|lower or "puerto" in log.tipo|lower %}
+                <span class="badge badge-bloqueo">{{ log.tipo }}</span>
+              {% elif "cambio" in log.tipo|lower or "regla" in log.tipo|lower %}
+                <span class="badge badge-cambio">{{ log.tipo }}</span>
+              {% elif "análisis" in log.tipo|lower or "ia" in log.tipo|lower %}
+                <span class="badge badge-ia">{{ log.tipo }}</span>
+              {% else %}
+                <span class="badge badge-otro">{{ log.tipo }}</span>
+              {% endif %}
+            </td>
+            <td>{{ log.origen }}</td>
+            <td>{{ log.fecha }} {{ log.hora }}</td>
+            <td><span class="text-info" title="{{ log.detalle }}">Ver detalles →</span></td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+
+      <div class="meta mt-3">
+        <strong>Total de registros:</strong> {{ registros | length }} — Página 1 de 1
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>
